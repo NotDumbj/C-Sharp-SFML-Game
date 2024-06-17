@@ -3,6 +3,8 @@ using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +24,7 @@ namespace Console_App_101
 
         int player_X = 10;
         int player_Y;
-        float player_speed = 3.5f;
+        float player_speed = 0.065f;
 
         int player_sq_len = 128;
 
@@ -86,9 +88,6 @@ namespace Console_App_101
 
         }
 
-
-
-
         public void run()
         {
             Console.WriteLine("Game Render : " + c);
@@ -99,22 +98,39 @@ namespace Console_App_101
 
             if(Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right))
             {
+                int counter = 0;
                 while (i_walk < 896)
                 {
+                    screen.DispatchEvents();
                     hero_wlk.TextureRect = new IntRect(i_walk, 0, player_sq_len, player_sq_len);
-                    i_walk += player_sq_len;
                     screen.Clear(Color.Cyan);
                     screen.Draw(ground);
                     screen.Draw(hero_wlk);
                     screen.Display();
 
+
+                    //thanks brain
+                    if(!(Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right)))
+                    {
+                        break;
+                    }
+
+                    //bro i loved this, i don't know how unefficient it is, but it solved the problem
+                    counter++;
+                    if (counter == 200)
+                    {
+                        i_walk += player_sq_len;
+                        counter = 0;
+                    }
                     player_start.X += player_speed;
+                    hero_wlk.Position = player_start;
+
 
                 }
                 i_walk = 0;
             }
 
-
+            hero_std.Position = player_start;
             screen.Draw(hero_std);
             screen.Draw(ground);
             screen.Display();
