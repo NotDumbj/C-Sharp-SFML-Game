@@ -248,10 +248,8 @@ namespace Console_App_101
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.R))
             {
-
                 player_start.X = 10;
                 hero_wlk.Position = player_start;
-
             }
 
 
@@ -274,6 +272,7 @@ namespace Console_App_101
             hero_std.Scale = new Vector2f(1, 1);
             hero_std.Origin = player_new_pos;
         }
+
         private void updateOriginL() {
             hero_spr.Origin = new Vector2f(hero_spr.GetLocalBounds().Width, 0);
             hero_spr.Scale = new Vector2f(-1, 1);
