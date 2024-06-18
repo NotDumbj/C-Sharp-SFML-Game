@@ -24,11 +24,14 @@ namespace Console_App_101
 
         int player_X = 10;
         int player_Y;
-        float player_speed = 0.065f;
+        float wlk_player_speed = 0.05f;
+        float spr_player_speed = 0.109f;
 
         int player_sq_len = 128;
 
         int ground_size = 45;
+        int wlk_sheet_size = 896;
+        int spr_sheet_size = 1024;
 
 
         Texture t_hero_std;
@@ -44,23 +47,23 @@ namespace Console_App_101
 
         VertexArray ground;
 
+        int animationDelay = 215;
 
         public Game()
         {
+            //Console.WriteLine("Initializing game...");
+
             screen = new(new(window_width, window_height), "Gamion");
             screen.Closed += (sender, e) => screen.Close();
 
             //Character
             t_hero_std = new("Idle.png");
             t_hero_wlk = new("Walk.png");
-            //Texture t_hero_spr = new("Run.png");
+            t_hero_spr = new("Run.png");
 
             player_Y = (int)(window_height - ground_size - player_sq_len);
 
             player_start = new Vector2f(player_X, player_Y);
-
-            player_new_pos = player_start;
-
 
             hero_std = new Sprite(t_hero_std)
             {
@@ -71,7 +74,13 @@ namespace Console_App_101
             {
                 Position = player_start
             };
-            //Sprite hero_spr = new(t_hero_spr);
+
+            player_new_pos = hero_wlk.Origin;
+
+            hero_spr = new(t_hero_spr)
+            {
+                Position = player_start
+            };
 
             ground = new VertexArray(PrimitiveType.Quads, 4);
 
@@ -82,24 +91,127 @@ namespace Console_App_101
 
             hero_std.TextureRect = new IntRect(0, 0, player_sq_len, player_sq_len);
 
-            hero_wlk.TextureRect = new IntRect(i_walk, 0 , player_sq_len , player_sq_len);
+            hero_wlk.TextureRect = new IntRect(i_walk, 0, player_sq_len, player_sq_len);
 
             run();
 
         }
 
+
+        int i = 1;
         public void run()
         {
-            Console.WriteLine("Game Render : " + c);
+            //Console.WriteLine("Game Render : " + c);
             c++;
 
-            screen.DispatchEvents();
-            screen.Clear(Color.Cyan);
+            bool movingRight = !(Keyboard.IsKeyPressed(Keyboard.Key.LShift)) && Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right);
+            bool movingLeft = !(Keyboard.IsKeyPressed(Keyboard.Key.LShift)) && Keyboard.IsKeyPressed(Keyboard.Key.A) || Keyboard.IsKeyPressed(Keyboard.Key.Left);
 
-            if(Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right))
+            bool sprintRight = Keyboard.IsKeyPressed(Keyboard.Key.LShift) && Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right);
+            bool sprintLeft = Keyboard.IsKeyPressed(Keyboard.Key.LShift) && Keyboard.IsKeyPressed(Keyboard.Key.A) || Keyboard.IsKeyPressed(Keyboard.Key.Left);
+
+            if (sprintRight)
             {
                 int counter = 0;
-                while (i_walk < 896)
+                updateOriginR();
+                while (i_walk < spr_sheet_size)
+                {
+                    screen.DispatchEvents();
+                    hero_spr.TextureRect = new IntRect(i_walk, 0, player_sq_len, player_sq_len);
+                    screen.Clear(Color.Cyan);
+                    screen.Draw(ground);
+                    screen.Draw(hero_spr);
+                    screen.Display();
+
+                    if (!(sprintRight))
+                    {
+                        break;
+                    }
+
+                    counter++;
+                    if (counter == animationDelay - 15)
+                    {
+                        i_walk += player_sq_len;
+                        counter = 0;
+                    }
+                    player_start.X += spr_player_speed;
+                    hero_spr.Position = player_start;
+
+
+                }
+                i_walk = 0;
+            }
+
+            if (sprintLeft)
+            {
+                int counter = 0;
+                updateOriginL();
+                while (i_walk < spr_sheet_size)
+                {
+                    screen.DispatchEvents();
+                    hero_spr.TextureRect = new IntRect(i_walk, 0, player_sq_len, player_sq_len);
+                    screen.Clear(Color.Cyan);
+                    screen.Draw(ground);
+                    screen.Draw(hero_spr);
+                    screen.Display();
+
+                    if (!(sprintLeft))
+                    {
+                        break;
+                    }
+
+                    counter++;
+                    if (counter == animationDelay - 15)
+                    {
+                        i_walk += player_sq_len;
+                        counter = 0;
+                    }
+                    player_start.X -= spr_player_speed;
+                    hero_spr.Position = player_start;
+
+
+                }
+                i_walk = 0;
+            }
+
+            if (movingRight)
+            {
+                int counter = 0;
+                updateOriginR();
+                while (i_walk < wlk_sheet_size)
+                {
+                    screen.DispatchEvents();
+                    hero_wlk.TextureRect = new IntRect(i_walk, 0, player_sq_len, player_sq_len);
+                    screen.Clear(Color.Cyan);
+                    screen.Draw(ground);
+                    screen.Draw(hero_wlk);
+                    screen.Display();
+
+                    //thanks brain
+                    if (!(Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right)))
+                    {
+                        break;
+                    }
+
+                    //bro i loved this, i don't know how unefficient it is, but it solved the problem
+                    counter++;
+                    if (counter == animationDelay)
+                    {
+                        i_walk += player_sq_len;
+                        counter = 0;
+                    }
+                    player_start.X += wlk_player_speed;
+                    hero_wlk.Position = player_start;
+
+                }
+                i_walk = 0;
+            }
+
+            if (movingLeft)
+            {
+                int counter = 0;
+                updateOriginL();
+                while (i_walk < wlk_sheet_size)
                 {
                     screen.DispatchEvents();
                     hero_wlk.TextureRect = new IntRect(i_walk, 0, player_sq_len, player_sq_len);
@@ -109,20 +221,18 @@ namespace Console_App_101
                     screen.Display();
 
 
-                    //thanks brain
-                    if(!(Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right)))
+                    if (!(Keyboard.IsKeyPressed(Keyboard.Key.A) || Keyboard.IsKeyPressed(Keyboard.Key.Left)))
                     {
                         break;
                     }
 
-                    //bro i loved this, i don't know how unefficient it is, but it solved the problem
                     counter++;
-                    if (counter == 200)
+                    if (counter == animationDelay)
                     {
                         i_walk += player_sq_len;
                         counter = 0;
                     }
-                    player_start.X += player_speed;
+                    player_start.X -= wlk_player_speed;
                     hero_wlk.Position = player_start;
 
 
@@ -130,11 +240,43 @@ namespace Console_App_101
                 i_walk = 0;
             }
 
+            if (Keyboard.IsKeyPressed(Keyboard.Key.R))
+            {
+
+                player_start.X = 10;
+                hero_wlk.Position = player_start;
+
+            }
+
+
+            screen.DispatchEvents();
+            screen.Clear(Color.Cyan);
+
             hero_std.Position = player_start;
             screen.Draw(hero_std);
             screen.Draw(ground);
             screen.Display();
         }
 
+
+        private void updateOriginR()
+        {
+            hero_spr.Scale = new Vector2f(1, 1);
+            hero_spr.Origin = player_new_pos;
+            hero_wlk.Scale = new Vector2f(1, 1);
+            hero_wlk.Origin = player_new_pos;
+            hero_std.Scale = new Vector2f(1, 1);
+            hero_std.Origin = player_new_pos;
+        }
+        private void updateOriginL() {
+            hero_spr.Origin = new Vector2f(hero_spr.GetLocalBounds().Width, 0);
+            hero_spr.Scale = new Vector2f(-1, 1);
+            hero_wlk.Origin = new Vector2f(hero_wlk.GetLocalBounds().Width, 0);
+            hero_wlk.Scale = new Vector2f(-1, 1);
+            hero_std.Origin = new Vector2f(hero_wlk.GetLocalBounds().Width, 0);
+            hero_std.Scale = new Vector2f(-1, 1);
+        }
     }
+
+    
 }

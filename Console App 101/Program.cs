@@ -17,16 +17,6 @@ class Program
 
     static void Main(string[] args)
     {
-        //// Create the main window
-        //RenderWindow window = new RenderWindow(new VideoMode(800, 600), "SFML.Net Trail Effect");
-        //window.Closed += (sender, e) => window.Close();
-
-        //// Load a texture and create a sprite
-        //Texture texture = new Texture("character.png");
-        //Sprite sprite = new Sprite(texture)
-        //{
-        //    Position = new Vector2f(400, 300)
-        //};
 
         //// Trail segments list
         //List<TrailSegment> trailSegments = new List<TrailSegment>();
@@ -36,11 +26,7 @@ class Program
         //float speed = 5.0f;
         //float trailDuration = 1.0f; // 1 second
 
-        //// Start the game loop
-        //Clock clock = new Clock();
-        //while (window.IsOpen)
-        //{
-        //    // Process events
+  
         //    window.DispatchEvents();
 
         //    // Handle input and move sprite
@@ -60,11 +46,6 @@ class Program
         //    if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
         //        movement.Y += speed;
 
-        //    // Calculate new position
-        //    Vector2f newPosition = sprite.Position + movement;
-
-        //    // Update sprite position
-        //    sprite.Position = newPosition;
 
         //    // Add new trail segment
         //    trailSegments.Add(new TrailSegment { Position = newPosition, Timestamp = clock.ElapsedTime.AsSeconds() });
@@ -78,12 +59,7 @@ class Program
         //        trailSegments.RemoveAt(0);
         //    }
 
-        //    // Clear trail when 'R' key is pressed
-        //    if (Keyboard.IsKeyPressed(Keyboard.Key.R))
-        //    {
-        //        sprite.Position = new Vector2f(400, 300);
-        //        trailSegments.Clear();
-        //    }
+
 
         //    // Clear screen
         //    window.Clear(Color.Black);
@@ -103,11 +79,6 @@ class Program
         //        window.Draw(trailCircle);
         //    }
 
-        //    // Draw the sprite
-        //    window.Draw(sprite);
-
-        //    // Update the window
-        //    window.Display();
 
 
         Game game = new();
