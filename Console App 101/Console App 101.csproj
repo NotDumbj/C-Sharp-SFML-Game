@@ -19,6 +19,9 @@
     <None Update="Idle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Run.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

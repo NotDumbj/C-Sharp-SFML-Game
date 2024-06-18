@@ -28,6 +28,7 @@ namespace Console_App_101
 
         public Game()
         {
+           
             player = new Player(new List<Body>
             {
                 new Body(new Sprite(new Texture("Idle.png")), 128),
@@ -37,6 +38,11 @@ namespace Console_App_101
 
             screen = new(new(window_width, window_height), "Gamion");
             screen.Closed += (sender, e) => screen.Close();
+
+            String iconFilePath = "icon.png";
+
+            Image icon = new Image(iconFilePath);
+            screen.SetIcon(icon.Size.X, icon.Size.Y, icon.Pixels);
 
             player.nxt_position = player.states[1].sprite.Origin;
 

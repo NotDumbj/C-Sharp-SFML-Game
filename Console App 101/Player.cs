@@ -91,6 +91,11 @@ namespace Console_App_101
                 screen.Draw(sp.sprite);
                 screen.Display();
 
+                if (Keyboard.IsKeyPressed(Keyboard.Key.LShift))
+                {
+                    break;
+                }
+
                 //thanks brain
                 if (!(Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right)))
                 {
@@ -128,6 +133,10 @@ namespace Console_App_101
                 screen.Display();
 
 
+                if (Keyboard.IsKeyPressed(Keyboard.Key.LShift))
+                {
+                    break;
+                }
                 if (!(Keyboard.IsKeyPressed(Keyboard.Key.A) || Keyboard.IsKeyPressed(Keyboard.Key.Left)))
                 {
                     break;
