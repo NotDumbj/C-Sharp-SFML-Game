@@ -123,7 +123,7 @@ namespace Console_App_101
                     screen.Draw(hero_spr);
                     screen.Display();
 
-                    if (!(sprintRight))
+                    if (!(Keyboard.IsKeyPressed(Keyboard.Key.LShift) && Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right)))
                     {
                         break;
                     }
@@ -155,7 +155,7 @@ namespace Console_App_101
                     screen.Draw(hero_spr);
                     screen.Display();
 
-                    if (!(sprintLeft))
+                    if (!(Keyboard.IsKeyPressed(Keyboard.Key.LShift) && Keyboard.IsKeyPressed(Keyboard.Key.A) || Keyboard.IsKeyPressed(Keyboard.Key.Left)))
                     {
                         break;
                     }
@@ -192,7 +192,10 @@ namespace Console_App_101
                     {
                         break;
                     }
-
+                    if(sprintRight || sprintLeft)
+                    {
+                        break;
+                    }
                     //bro i loved this, i don't know how unefficient it is, but it solved the problem
                     counter++;
                     if (counter == animationDelay)
@@ -225,7 +228,10 @@ namespace Console_App_101
                     {
                         break;
                     }
-
+                    if (sprintRight || sprintLeft)
+                    {
+                        break;
+                    }
                     counter++;
                     if (counter == animationDelay)
                     {
